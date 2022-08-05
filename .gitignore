@@ -1,6 +1,5 @@
 .vscode/*
 */migrations/00*
-*.txt
 *.log
 *.pot
 *.pyc
