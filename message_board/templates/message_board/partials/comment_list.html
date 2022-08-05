@@ -1,0 +1,22 @@
+{% for comment in comments_list %}
+<div class="bg-dark2 m-1 mx-2 p-2">
+  {% comment %} <p class="mb-1">{{ comment.message }}</p>
+  <p class="reply-foot text-muted m-1">
+    By: <a href="">@{{ comment.author.username }}</a> on
+    <time class="time">{{ comment.creation_date }}</time>
+    Replys {{ comment.childs__count }}
+  </p> {% endcomment %}
+  <div class="comment-container">
+    {{ comment.message }}
+    <div class="comment-footer d-flex gap-2">
+      <div>By: <a href="">@{{ comment.author.username }}</a></div>
+      <div>on <time class="time">{{ comment.creation_date }}</time></div>
+      <div style="cursor:pointer;">Replys {{ comment.childs__count }}</div>
+    </div>
+  </div>
+</div>
+{% empty %}
+<div class="m-5">
+  <h3>No comments yet</h3>
+</div>
+{% endfor %}

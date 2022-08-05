@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+{% block title %}Update Post{% endblock title %}Update Post
+{% load bootstrap5 %}
+{% block content %}
+<div class="container p-2">
+  <div class="bg-dark2 p-4">
+    <div class="p-2">
+      <div class="gap-3">
+        <h3>Update post</h3>
+        <div>
+          <button
+          type="submit"
+          class="btn btn-primary"
+          value="Post"
+          form="postForm"
+        >
+          Update
+        </button>
+        <a href="{% url 'teams:message_board:post_detail' current_team publication.id %}"><button class="btn btn-danger">Cancel</button></a>
+        </div>
+      </div>
+      <form
+        id="postForm"
+        action="{% url 'teams:message_board:update_post' current_team publication.pk%}"
+        method="post"
+      >
+        {% csrf_token %} {% bootstrap_form form %}
+      </form>
+    </div>
+
+    {% if publication.category == 'poll' %}
+
+    <div>
+      <div class="p-2 d-flex gap-3">
+        <h4>Add/Modify options</h4>
+        {% comment %} <button
+          type="button"
+          class="btn btn-primary btn-sm"
+          hx-get="{% url 'teams:message_board:add_poll_option' current_team publication.pk %}"
+          hx-target="#choiceforms"
+          hx-swap="beforebegin"
+        >
+          Add Option
+        </button> {% endcomment %}
+      </div>
+    </div>
+
+    <div class= "w-50" id="choiceforms"></div>
+
+    <div class="p-2 list-group d-grid gap-1 w-75 list-group-numbered" id="poll_options_list">
+      {% for option in publication.poll_options.all %} 
+        {% include 'message_board/partials/option_detail.html' %}
+      {% endfor %}
+      <div id="new_opt"></div>
+    </div>
+    <div id="add_poll_option"
+      hx-get="{% url 'teams:message_board:add_poll_option' current_team publication.pk %}"
+      hx-trigger="load">
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock content %}

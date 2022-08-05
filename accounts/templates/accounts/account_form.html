@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Profile Update{% endblock title %}
+{% load bootstrap5 %}
+{% block content %}
+<div class="p-3 container">
+  <div class="row bg-dark2 border border-secondary">
+    <div class="px-3 py-2 px-md-5 py-md-4">
+      <div class="">
+        <h1>Update your information</h1>
+        <div class="py-3">
+          <form
+            class="account-form"
+            method="post"
+            enctype="multipart/form-data"
+          >
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <button type="submit" class="save btn btn-primary">Update</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

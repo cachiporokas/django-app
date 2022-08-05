@@ -1,0 +1,22 @@
+{% extends 'teams/team_base.html' %}
+{% block title %}Project: {{teamproject.name}}{% endblock title %}
+{% load static %}
+{% block content %}
+   <div class="container-fluid p-4">
+      <div class="bg-dark2 p-2">
+         <div class="row p-2">
+            <h1>{{teamproject.name}}</h1>
+         </div>
+         <div class="row p-2 py-4">
+            <h5>{{teamproject.description}}</h5>
+         </div>
+         <div class="row p-2">
+            <h5>Teams working on this project: </h5>
+            {% for team in teamproject.teams.all %}
+               <a href="{% url 'teams:team_detail' team.slug%} ">{{team.name}}</a>
+            {% endfor %}
+         </div>
+      </div>
+   </div>
+   
+{% endblock content %}

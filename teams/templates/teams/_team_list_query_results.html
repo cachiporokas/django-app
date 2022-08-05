@@ -1,0 +1,19 @@
+<div class="container-fluid p-4 pt-3">
+  <div class="row row-cols-1 row-cols-md-2 p-2 bg-dark2" id="query_results">
+    {% for team in team_list %}
+    <div class="col-md-6 p-2" id="results_container">
+      <a
+        class="text-decoration-none text-dark"
+        href="{% url 'teams:team_detail' team.slug %}"
+      >
+        <div class="card div-zoom border border-secondary card-results">
+          <div class="card-body">
+            <h5 class="card-title" id="element_name">{{ team.name }}</h5>
+            <p class="card-text">{{ team.description }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+</div>

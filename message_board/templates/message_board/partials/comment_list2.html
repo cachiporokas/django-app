@@ -1,0 +1,53 @@
+{% for comment in comments_list %}
+<div class="bg-secondary border-start border-3">
+  <div class="comment-container opened p-1" id="comment-level-0" dataset="">
+    <div class="comment-card bg-dark2 p-2 ps-3 my-1 ms-1">
+      <h6>{{ comment.message }}</h6>
+      <div class="comment-card-footer d-flex justify-content-end gap-2 me-3 mb-1 border-top border-top mt-3 pt-1" style="font-size:0.88rem;">
+          <div class="flex-grow-1">
+            <a
+              class="hx-anchor"
+              hx-get="{% url 'teams:message_board:create_reply' team_slug pub_pk comment.id %}"
+              hx-target="#replyform{{comment.id}}"
+              hx-swap="beforebegin"
+              style="cursor:pointer;"
+            >
+              Reply
+          </a>
+          </div>
+        <div>By: <a href="#">@{{ comment.author.username }}</a></div>
+        <div>on <time class="time">{{ comment.creation_date }}</time></div>
+        <div class="show-replies" 
+          id="show-replies-{{comment.id}}"
+          style="cursor:pointer;"
+        >
+          {% if comment.childs__count > 0 %}
+            <a
+              class="hx-anchor"
+              hx-get="{% url 'teams:message_board:comment_list' team_slug pub_pk comment.id%}"
+              hx-target="#replylist{{comment.id}}"
+              hx-swap="outerHTML"
+            >
+              Replies {{ comment.childs__count }}
+            </a>
+          {% else %}
+            Replies {{ comment.childs__count }}
+          {% endif %}
+          
+        </div>
+      </div>
+      <div id="replyform{{comment.id}}"></div>
+      <div id="replylist{{comment.id}}"></div>
+    </div>
+    
+    
+  </div>
+</div>
+{% empty %}
+<div class="pt-3">
+  <h3>No comments yet</h3>
+</div>
+{% endfor %}
+
+{% block script %}
+{% endblock script %}

@@ -1,0 +1,27 @@
+{% for post in posts_list %}
+<div class="px-3 py-1">
+  <a class="text-light" href="{% url 'teams:message_board:post_detail' post.team.slug post.id %}">
+    <div class="row p-2 m-auto bg-dark2 post-list-container" id="results_container">
+      <!--Username-->
+      <div class="col-sm-3 my-auto">
+        <strong>{{ post.author.username }} ({{ post.category|title }})</strong>
+      </div>
+
+      <!--Tile-->
+      <div class="col-sm-6 my-auto">
+        <strong id="element_name">{{ post.title }}</strong>
+        <p class="py-1 m-0">{{ post.message_snip }}</p>
+      </div>
+      <!--Date-->
+      <div class="col-sm-3 my-auto">
+        <p class="p-0 m-0">{{ post.creation_date }}</p>
+      </div>
+
+    </div>
+  </a>
+</div>
+{% empty %}
+  <div class="p-2">
+    <h2>No post published yet.</h2>
+  </div>
+{% endfor %}

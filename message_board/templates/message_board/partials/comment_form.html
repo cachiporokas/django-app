@@ -1,0 +1,16 @@
+<!--Comment Form. Change to HTMX?-->
+<div>
+  <div class="comment-form">
+    <div class='form-group py-2'>
+      <form id='CommentForm'
+        action="{% url 'teams:message_board:create_comment' publication.team.slug publication.id %}"
+        method="post">
+          {% load bootstrap5 %}
+          {% csrf_token %}
+          {% bootstrap_form form %}
+        <button type="submit" class="btn btn-primary" value="Post">Comment</button>
+      </form>
+    </div>
+  </div>
+</div>
+<!--End Comment Form-->

@@ -1,0 +1,70 @@
+{% extends 'teams/team_base.html' %}
+{% block title %}Message Board{% endblock title %}
+{% block content %}
+<div class="container-fluid py-1">
+  <div class="m-1 row bg-dark2 border border-secondary border-2">
+    <div class="px-3 py-2 px-md-4 py-md-3">
+      <!--### Post List Header ###-->
+      <div class="post-list-header py-2 d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center">
+        <div class="flex-grow-1">
+          <h3>{{post_type}}</h3>
+        </div>
+        {% if user.is_authenticated and team_obj in user.teams.all %}
+          <div class="d-flex flex-row gap-1">
+            <a href="{% url 'teams:message_board:team_posts' current_team %}"
+              class="btn btn-primary" style="font-size:1.1em;">
+              <span class="bi bi-list-ul" aria-hidden="true"></span>
+              <span class="icon-label">All Posts</span>
+            </a>
+            <a href="{% url 'teams:message_board:user_drafts' current_team "drafts" %}"
+              class="btn btn-warning" style="font-size:1.1em;">
+              <span class="bi bi-journal-richtext" aria-hidden="true"></span>
+              <span class="icon-label">My Drafts</span>
+            </a>
+            <a href="{% url 'teams:message_board:create_post' current_team %}"
+              class="btn btn-danger" style="font-size:1.1em;">
+              <span class="bi bi bi-pen-fill" aria-hidden="true"></span>
+              <span class="icon-label">New post</span>
+            </a>
+          </div>
+        {% endif %}
+      </div>
+      <!--### Post List ###-->
+      <div class="post-list pt-3">
+        <div class="border border-secondary border-2 p-1 bg-secondary">
+          <div class="row d-flex flex-columns gap-2 p-2" id="query_results">
+            {% include 'message_board/partials/post_list.html' with posts_list=posts_list %}
+          </div>
+        </div>
+      </div> 
+      <!--######-->
+    </div>
+  </div>
+</div>
+{% endblock content %}
+
+    <!--List-->
+    {% comment %} <div class="container-fluid p-4 py-4">
+        <div class="border border-secondary border-2 mx-2 p-3 bg-secondary">
+            <div class="row d-flex flex-columns gap-3 p-2" id="query_results">
+                {% include 'message_board/_post_list.html' with posts_list=posts_list %}
+            </div>
+        </div>
+    </div> {% endcomment %}
+
+{% block scripts %}
+<script>
+  function showDiv(elem) {
+      let opt = document.getElementById("c1");
+      let vis = "none";
+      if(opt.checked)  {
+          vis = "block"
+      }
+      else{
+          vis="none"
+      }
+      console.log(vis)
+      document.getElementById(elem).style.display=vis;
+  }
+</script>
+{% endblock scripts %}

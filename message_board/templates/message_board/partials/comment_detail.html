@@ -1,0 +1,12 @@
+<div class="bg-secondary mt-2">
+  <div class="comment-container opened border-start border-3 p-1" id="comment-level-0" dataset="">
+    <div class="comment-card bg-dark2 p-2 mb-1">
+      <h6>{{ comment.message }}</h6>
+      <div class="comment-card-footer d-flex justify-content-end gap-2 me-3" style="font-size:0.88rem;">
+        <div>By: <a href="#">@{{ comment.author.username }}</a></div>
+        <div>on <time class="time">{{ comment.creation_date }}</time></div>
+        <div class="show-replies" style="cursor:pointer;">Replies {{ comment.childs__count }}</div>
+      </div>
+    </div>
+  </div>
+</div>

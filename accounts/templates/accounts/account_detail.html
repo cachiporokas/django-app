@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+{% block title %}User Profile{% endblock title %}
+{% load static %}
+{% block content %}
+<div class="p-4 mx-4">
+  <div class="row d-flex justify-content-center gap-2 gap-sm-4">
+    <div class="bg-dark2 col-4 col-sm-3 my-auto">
+      <div class="my-auto" id="profile-image" style="display:none;">
+        <img
+          class="profile-img"
+          {% if user_detail.profile_image %}
+          src="{{ user_detail.profile_image.url }}"
+          {% else %}
+          src="{% static 'img/mega.png' %}"
+          {% endif %}
+          alt="user-profile-img"
+        />
+      </div>
+    </div>
+    <div class="col-8 col-sm-8 bg-dark2">
+      <div class="p-3" id="profile-description" style="display:none;">
+        <h1><strong>{{ user_detail.username|title }} </strong></h1>
+        <h5>Contact: <a href="">{{ user_detail.email }}</a></h5>
+        <h6>
+          Joined: {{user_detail.date_joined}} <br />
+          Last login: {{user_detail.last_login}}
+        </h6>
+        {% if user.username == user_detail.username %}
+        <a href="{% url 'accounts:user_update' user.id %}">Update Profile</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+<!-- ========== Start Team list ========== -->
+<div class="p-4 mx-4 border-top border-dark border-3">
+  <div class="row p-2 d-flex flex-row gap-1 bg-dark2 justify-content-left">
+    <!-- ========== Start list ========== -->
+    <div class="col-sm-3 py-2 py-sm-2" id="team-list" style="display:none;">
+      <h2>My teams:</h2>
+      <div class="list-group py-3">
+        {% for team in user_detail.teams.all %}
+        <a
+          id="{{team.slug}}-btn"
+          href="#"
+          class="team-name list-group-item list-group-item-action list-group-item-primary"
+          onclick="toggle('{{team.slug}}');"
+          >{{team.name}}</a
+        >
+        {% endfor %}    
+      </div>
+    </div>
+    <!-- ========== End list ========== -->
+    <!-- Team description -->
+    <div class="col-sm-8 py-1 py-sm-2 my-4 my-sm-0 border-start border-light border-3">
+      {% for team in user_detail.teams.all %}
+      <div class="team-content" id="{{team.slug}}" style="display: none">
+        <h2>{{team.name}}</h2> <br>
+        <p class="lead">{{team.description}}</p>
+        <a href="{% url 'teams:team_detail' team.slug %}">Visitar</a>
+      </div>
+      {% endfor %}
+    </div>
+    <!-- End Team description -->
+  </div>
+</div>
+<!-- ========== End Team list ========== -->
+{% endblock content %}
+
+{% block scripts %}
+<script>
+
+  $('#profile-image').fadeIn(duration=1500);
+  $('#profile-description').fadeIn(duration=1500);
+  $('#team-list').fadeIn(duration=1500);
+
+  let current_team = "{{user_detail.teams.all.0.slug}}"
+  $("#"+current_team).fadeToggle("slow");
+  $(`#${current_team}-btn`).toggleClass("active")
+
+  function toggle(target) {
+    if (target !== current_team){
+      $("#"+current_team).toggle();
+      $("#"+target).fadeToggle("slow");
+      
+      $(`#${current_team}-btn`).toggleClass("active")
+      $(`#${target}-btn`).toggleClass("active")
+
+      current_team = target;
+    }
+  }
+</script>
+{% endblock scripts %}

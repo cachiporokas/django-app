@@ -1,0 +1,15 @@
+{% extends 'teams/team_base.html' %}
+{% block results %}
+    <h1>holi</h1>
+    {% for project in projects_list %}
+        {{ project.name }}
+        <div class="card col-md-6 p-3" id="results_container">
+            <div class="card-body">
+                <h5 class="card-title" id = "element_name">{{ project.name }}</h5>
+                <p class="card-text">
+                    {{ project.description }}
+                </p>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock results %}

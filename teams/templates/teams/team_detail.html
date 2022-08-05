@@ -1,0 +1,61 @@
+{% extends 'teams/team_base.html' %}
+{% block title %}Team: {{team.name}}{% endblock title %}
+{% load static %}
+{% block content %}
+    <div class="container-fluid post-details">
+        <div class="row">
+            <div class="col-md-3 p-0">
+                <img src="{% static '/img/stock_02.jpg' %}" alt="team_img">
+            </div>
+            <div class="col-md-9">
+                <div class="bg-dark2">
+                    <div class="p-3 m-2 d-flex">
+                        <div class="my-auto">
+                            <h1>{{ team.name }}</h1>
+                        </div>
+                        {% if user.is_authenticated and user in team.members.all %}
+                            <div class="p-3 my-auto ">
+                                <a href="{% url 'teams:message_board:team_posts' team.slug %}">
+                                    <button type="button" class="btn btn-primary btn-zoom">
+                                        <span class="bi bi-chat-right-text-fill"> Message Board</span>
+                                    </button>
+                                </a>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="box p-3">
+                        <h5 class="lead">{{ team.description }} </h5>
+                    </div>
+                    <div class="box p-3">
+                        <h5>
+                            <strong>Meet our members:</strong>
+                        </h5>
+                        <div class="d-flex gap-3 p-2">
+                            {% for member in team.members.all %}
+                                <a href="{% url 'accounts:user_detail' member.id %}">{{ member.username }}</a>
+                            {% empty %}
+                                <p>
+                                    Team has no members yet.
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="box p-3">
+                        <h5>
+                            <strong>Our Projects:</strong>
+                        </h5>
+                        <div class="d-flex gap-3 p-2">
+                            {% for project in team.projects.all %}
+                                <a href="{% url 'teams:project_detail' project.slug %}">{{ project.name }}</a>
+                            {% empty %}
+                                <p>
+                                    Team has no projects yet.
+                                </p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}

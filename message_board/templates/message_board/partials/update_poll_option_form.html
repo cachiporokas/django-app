@@ -1,0 +1,13 @@
+{% load bootstrap5 %}
+<div hx-target="this" hx-swap="outerHTML">
+  <form method="POST">
+    {% csrf_token %} {% bootstrap_form form %}
+    <button
+      type="submit"
+      class="btn btn-primary"
+      hx-post="{% url 'teams:message_board:update_poll_option' current_team publication_id option.id %}"
+    >
+      Submit
+    </button>
+  </form>
+</div>

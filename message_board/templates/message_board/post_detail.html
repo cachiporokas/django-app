@@ -1,0 +1,131 @@
+{% extends 'teams/team_base.html' %}
+{% block title %}{{publication.title}}{% endblock title %}{{publication.title}}
+{% load static %}
+{% block content %}
+<div class="p-2">
+  <div class=" m-1 p-2">
+    <div class="px-4 container-fluid border border-secondary border-2 bg-dark2">
+        
+      <!--Publication-->
+      <div class="row pt-2">
+        <!--Pre-Content-->
+        <div class="col-12 my-auto d-flex gap-4 p-2">
+          <!--User profile image-->
+          <div class="my-auto">
+            <img 
+              {% if user.profile_image %}
+              src="{{ user.profile_image.url }}"
+              {% else %}
+              src="{% static 'img/mega.png' %}"
+              {% endif %}
+              alt="user-thumbnail"
+              class="img-fluid my-auto"
+              style="height:80px; width:80px;">
+          </div>
+          <!--Publication details-->
+          <div class="">
+            <h3><i class="bi bi-chat-square-text"></i>&nbsp;&nbsp;{{ publication.title }}</h3>
+            <h6>By: <a href="{% url 'accounts:user_detail' publication.author.id %}">@{{publication.author.username}}</a></h6>
+            <h6>on <time class="time">{{ publication.creation_date }}</time>
+                in <a href="{% url 'teams:team_detail' publication.team.slug %}">{{ publication.team.name }}</a>
+            </h6>
+          </div>
+        </div>
+        <!--End Pre-Content-->
+
+        <!--Publication content-->
+        <div class="post-content pt-1 border-top border-2">
+          <div class="">
+            <p class="lead my-1">{{ publication.message }}</p>
+          </div>
+          <!--Poll Options if available-->
+          {% if publication.category == 'poll' %}
+          <div 
+            hx-get="{% url 'teams:message_board:poll_option_list' publication.team.slug publication.id %}"
+            hx-trigger="load">
+          </div>
+          {% endif %}
+        </div>
+        <!--End Publication content-->
+      </div>
+      <!--End Publication-->
+        
+      <!--Action buttons-->
+      <div class="row border-top">
+        <div class=" d-flex flex-wrap gap-3 py-3 ">
+          <a href="{% url 'teams:message_board:team_posts' publication.team.slug %}"
+            class="custom-btn btn-15">
+            <span class="bi bi-arrow-left-circle" aria-hidden="true"></span>
+            <span class="icon-label">Back to Posts</span>
+          </a>
+          <a href="#" onClick="toggleCommentBox()"
+            class="custom-btn btn-15">
+            <span class="bi bi-reply-fill" aria-hidden="true"></span>
+            <span class="icon-label">Comment</span>
+          </a>
+          <!--Author's Actions-->
+          {% if user.is_authenticated and publication.author == user %}
+          <a href="{% url 'teams:message_board:update_post' slug=publication.team.slug pk=publication.id %}"
+            class="custom-btn btn-15 btn-15-warning">
+            <span class="bi bi-arrow-clockwise" aria-hidden="true"></span>
+            <span class="icon-label">Update Post</span>
+          </a>
+          <a href="{% url 'teams:message_board:delete_post' slug=publication.team.slug pk=publication.id %}"
+            class="custom-btn btn-15 btn-15-danger">
+            <span class="bi bi-x-circle" aria-hidden="true"></span>
+            <span class="icon-label">Delete Post</span>
+          </a>
+          {% endif %}
+        </div>
+      </div>
+      <!--End Action Buttons-->
+      
+      {% include 'message_board/partials/comment_form.html' %}
+    </div>
+    <!--Comments. Change to HTMX?-->
+    <div class="px-4 container-fluid">
+      <div class="row pt-3">
+        <div class="col-12 my-auto bg-dark2 border border-secondary border-2">
+          <div class="p-1 pt-2">
+            <h4>Comments:</h4>
+          </div>
+          <div class="border-top border-3 d-flex flex-column gap-2 mb-3"
+            hx-get="{% url 'teams:message_board:comment_list' publication.team.slug publication.id -1%}"
+            hx-trigger="load">
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--End Comments-->
+  </div>
+</div>
+
+{% endblock content %}
+
+{% block scripts %}
+<script>
+  function toggleCommentBox(){
+      $(".comment-form").slideToggle()
+  }
+</script>
+
+<script>
+  const showReplies = document.querySelectorAll(".show-replies")
+
+  showReplies.forEach( (btn) => {
+    btn.addEventListener('click', (e) => {
+      let parentContainer = e.target.closest(".comment-container");
+      let _id = parentContainer.id;
+      if(_id) {
+        let childrenContainer = parentContainer.querySelectorAll(
+          `[dataset=${_id}]`
+        );
+        childrenContainer.forEach( (child) => child.classList.toggle("opened"))
+      }
+    })
+  })
+</script>
+
+
+{% endblock scripts %}
+

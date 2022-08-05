@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock title %}
+{% load bootstrap5 %}
+{% block content %}
+<div class="p-3 px-5 container">
+  <div class="row bg-dark2 border border-secondary">
+    <div class="px-3 py-2 px-md-5 py-md-4">
+      <div class="">
+        <h1>Login</h1>
+        <div class="py-3">
+          <form method="POST" class="form">
+            {% csrf_token %}
+            {% bootstrap_form form %}
+            <input class="btn btn-primary" type="submit" value="Login" />
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}

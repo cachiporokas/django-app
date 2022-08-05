@@ -1,0 +1,15 @@
+{% load bootstrap5 %}
+<div class="p-2" hx-target="#new_opt" hx-swap="beforebegin">
+  <form method="POST">
+    {% csrf_token %} {% bootstrap_form form %}
+    <button
+      class="btn btn-primary"
+      type="submit"
+      hx-post="{% url 'teams:message_board:add_poll_option' current_team publication_id %}"
+    >
+      Submit
+    </button>
+  </form>
+</div>
+
+

@@ -1,0 +1,19 @@
+<!--Comment Form. Change to HTMX?-->
+<div class="pt-2" hx-target='this' hx-swap='outerHTML'>
+  <div>
+    <form
+      class="d-flex gap-3 align-content-center"
+      id="ReplyForm"
+      hx-post="{% url 'teams:message_board:create_reply' pub_slug pub_pk comment_pk %}"
+      method="post"
+    >
+      {% load bootstrap5 %} {% csrf_token %} {% bootstrap_form form %}
+      <div>
+      <button type="submit" class="btn btn-dark border" value="Post">
+        Reply
+      </button>
+    </div>
+    </form>
+  </div>
+</div>
+<!--End Comment Form-->

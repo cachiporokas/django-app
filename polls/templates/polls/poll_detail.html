@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+   {% if messages %}
+         <ul class="messages">
+         {% for message in messages %}
+            <li>{{ message }}</li>
+         {% endfor %}
+         </ul>
+   {% endif %}
+
+   <h3>{{ poll.title }}</h3>
+
+   <h6>{{ poll.detail }}</h6>
+
+   {% for choice in poll.choices.all %}
+      <p>Choice: {{ choice.opiton }}</p>
+      <p>Votes: {{ choice.votes }}</p>
+   {% endfor %}
+
+
+{% endblock content %}

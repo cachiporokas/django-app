@@ -1,0 +1,94 @@
+{% load custom_tags %}
+
+<div hx-target="this" hx-swap="outerHTML" class="row" id="aver">
+  <div class="col-9 col-md-5">
+    {% for option in poll_option_list %}
+
+      {% if user in option.voters.all %}
+        {% url 'teams:message_board:poll_vote' option.publication.team.slug option.publication.id option.id 'unvote' as vote_url%}
+        {% define "bg-primary " as bgclass %}
+        {% define "highlight-elem-focus" as focused %}
+      {% else %}
+        {% url 'teams:message_board:poll_vote' option.publication.team.slug option.publication.id option.id 'vote' as vote_url %}
+        {% define "bg-secondary" as bgclass %}
+        {% define "" as focused %}
+      {% endif %}
+
+      <div class="bg-dark my-3 p-2 highlight-elem" hx-post={{vote_url}}>
+        {{ option.option }} ({{ option.votes }} votes):
+        <div class="bar-container my-1 d-flex gap-1" style="width:100%;">
+          <div id="poll-option-bar" dataset={{option.votes}} 
+            class="{{ bgclass }} border" 
+            style="width:0%; height:26px">
+          </div>
+          <div id="text-container" class=" me-1"><!--Votes %--></div>
+        </div>
+      </div>
+    {% endfor %}
+    {% comment %} <button class="w3-button w3-green" onload="move()">Click Me</button>  {% endcomment %}
+    <p>{{total_votes}} vote{{total_votes|pluralize}}</p>
+  </div>
+</div>
+
+
+{% comment %} {% if user in option.voters.all %}
+<a class="list-group-item list-group-item-action active"
+hx-post={% url 'teams:message_board:poll_vote' option.publication.team.slug option.publication.id option.id 'unvote' %}
+{% else %}
+<a class="list-group-item list-group-item-action"
+hx-post={% url 'teams:message_board:poll_vote' option.publication.team.slug option.publication.id option.id 'vote' %}
+{% endif %}
+hx-swap="outerHTML"> 
+{{option.option}}--{{ option.votes }}
+</a> {% endcomment %}
+
+{% block scripts %}
+<script>
+$("#aver").ready (
+  function(){
+    setTimeout (
+      function move() {
+        var elems = document.querySelectorAll(".bar-container");
+        elems.forEach( (elem) => 
+          {
+            var bar_container = elem.querySelector("#poll-option-bar");
+            var text_container = elem.querySelector("#text-container");
+            var width = 0;
+            var votes = +bar_container.attributes['dataset'].value;
+            var id = setInterval(frame, 10);
+            
+            function frame() {
+              if (width >= votes/+{{total_votes}}*100) {
+                clearInterval(id);
+              } else {
+                width++;
+                bar_container.style.width = width + '%'; 
+              }
+              text_container.textContent = width  + '%';
+              
+            }
+          } 
+        );
+      }, 150
+    );
+  }
+)
+</script>
+{% endblock scripts %}
+
+{% comment %} <script>
+  function move() {
+    var elem = document.getElementById("poll-option-bar");   
+    var width = 20;
+    var id = setInterval(frame, 10);
+    function frame() {
+      if (width >= 100) {
+        clearInterval(id);
+      } else {
+        width++; 
+        elem.style.width = width + '%'; 
+        elem.innerHTML = width * 1  + '%';
+      }
+    }
+  }
+  </script> {% endcomment %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block extra_options %}
+<div class="d-flex flex-column flex-sm-row gap-0 collapse navbar-collapse" id="navbarNavDropdown">
+  <div class="nav-item dropdown me-auto">
+    <a class="nav-link dropdown-toggle py-0 me-auto"
+      href="#"
+      id="navbarDropdownMenuTeams"
+      role="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false">Teams</a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuTeams">
+      <li>
+        <a class="dropdown-item" href="{% url 'teams:teams_all' %}">All Teams</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="{% url 'teams:user_teams' user.username %}">My Teams</a>
+      </li>
+    </ul>
+  </div>
+  <div class="nav-item dropdown me-auto">
+    <a class="nav-link dropdown-toggle py-0 me-auto"
+      href="#"
+      id="navbarDropdownMenuProjects"
+      role="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false"> Projects</a>
+    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuProjects">
+      <li>
+        <a class="dropdown-item"href="{% url 'teams:projects_all' %}">All Projects</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="{% url 'teams:project_user' user.username%}">My Projects</a>
+      </li>
+    </ul>
+  </div>
+</div>
+{% endblock extra_options %}
+{% block content %}
+    <div class="bg-dark2 py-3 px-2 m-2">
+      {% block pre_content %} {% endblock pre_content %}
+      {% include 'search_bar.html' %}
+    </div>
+    {% block results %} {% endblock results %}
+{% endblock content %}

@@ -1,0 +1,30 @@
+<div class="container-fluid search-bar px-3 py-2">
+    <label for="myInput">Search:</label>
+    <input class="col-8 input-sm"
+           type="text"
+           id="myInput"
+           onkeyup="filterQueryResults('myInput', '#results_container', '#element_name')"
+           placeholder="Team name">
+</div>
+
+{% block scripts %}
+<script>
+  function filterQueryResults(inputSearch, teamContainerId, teamNameId) {
+  // Declare variables
+      var input, filter, results, names, a, i, txtValue;
+      input = document.getElementById(inputSearch);
+      filter = input.value.toUpperCase();
+      elements = document.querySelectorAll(teamContainerId)
+
+      // Loop through all list items, and hide those who don't match the search query
+      for (i = 0; i < elements.length; i++) {
+          elementName = elements[i].querySelector(teamNameId).textContent
+          if (elementName.toUpperCase().indexOf(filter) > -1) {
+           elements[i].style.display = "";
+          } else {
+           elements[i].style.display = "none";
+          }
+      }
+  }
+</script>
+{% endblock scripts %}

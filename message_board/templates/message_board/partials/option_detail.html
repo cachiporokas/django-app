@@ -1,0 +1,42 @@
+<div hx-target="this" class="d-flex gap-3 align-items-center">
+  <div>
+    <li class="list-group-item list-group-item-action" style="width: 250px">
+      {{option.option}}
+    </li>
+  </div>
+
+  <div>
+    {% if user.is_authenticated and option.publication.author == user %}
+    <button
+      class="btn btn-warning btn-sm"
+      hx-swap="outerHTML"
+      hx-get="{% url 'teams:message_board:update_poll_option' option.publication.team.slug option.publication.id option.id %}"
+    >
+      Update
+    </button>
+    <button
+      class="btn btn-danger btn-sm"
+      hx-swap="outerHTML"
+      hx-post="{% url 'teams:message_board:delete_poll_option' option.publication.team.slug option.publication.id option.id %}"
+    >
+      Delete
+    </button>
+    {% else %}
+    {% comment %} <button
+      class="btn btn-secondary btn-sm"
+      hx-swap="outerHTML"
+      hx-post="{% url 'teams:message_board:poll_vote' option.publication.team.slug option.publication.id option.id 'vote' %}"
+      {{ button }}
+    >
+      Vote
+    </button>
+    <button
+      class="btn btn-secondary btn-sm"
+      hx-swap="outerHTML"
+      hx-post="{% url 'teams:message_board:poll_vote' option.publication.team.slug option.publication.id option.id 'unvote' %}"
+    >
+      Unvote
+    </button> {% endcomment %}
+    {% endif %}
+  </div>
+</div>

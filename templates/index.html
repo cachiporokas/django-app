@@ -1,0 +1,38 @@
+{% extends 'base.html' %} 
+{% block title %}Home{% endblock title %} 
+{% block content %}
+{% if user.is_authenticated %}
+<div class="p-3 px-5 container">
+  <div class="row bg-dark2 border border-secondary">
+    <div class="px-3 py-2 px-md-5 py-md-4">
+      <center><h1>Welcome {{ user.username }}</h1></center>
+    </div>
+  </div>
+</div>
+{% else %}
+<div class="p-3 px-5 container">
+  <div class="row bg-dark2 border border-secondary">
+    <div class="px-3 py-2 px-md-5 py-md-4 d-flex flex-column align-items-center">
+      <div class="p-2">
+        <h1>Welcome</h1>
+      </div>
+      <div class="d-flex gap-5 p-3">
+        <div>
+          <a href="{% url 'accounts:login' %}">
+            <button type="button" class="btn btn-secondary btn-lg border border-2 btn-zoom">
+              <span class="bi bi-door-closed txt-sz">Login</span>
+            </button>
+          </a>
+        </div>
+        <div>
+          <a href="{% url 'accounts:signup' %}">
+            <button type="button" class="btn btn-dark btn-lg border border-2 btn-zoom">
+              <span class="bi bi-fingerprint txt-sz">Register</span>
+            </button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endif %} {% endblock content %}

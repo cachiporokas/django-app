@@ -1,0 +1,9 @@
+{% extends 'teams/team_base.html' %}
+{% block pre_content %}
+<div class="container-fluid p-2">
+    <h2> {{user.username}}'s teams:</h2>
+</div>
+{% endblock pre_content %}
+{% block results %}
+    {% include 'teams/_team_list_query_results.html' %}
+{% endblock results %}

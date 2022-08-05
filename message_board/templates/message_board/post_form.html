@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}New Post{% endblock title %}
+{% load bootstrap5 %}
+{% block content %}
+    <div class="container p-2">
+        <div class="bg-dark2 p-4">
+            <h3>Create a new post</h3>
+            <form id='postForm'
+                action="{% url 'teams:message_board:create_post' current_team %}"
+                method="post">
+                {% csrf_token %}
+                {% bootstrap_form form %}
+            </form>
+            <button type="submit" class="btn btn-primary" form='postForm' value="Post">Create Post</button>
+            <a href="{% url 'teams:message_board:team_posts' current_team %}"><button class="btn btn-danger">Cancel</button></a>
+        </div>
+    </div>
+{% endblock content %}
