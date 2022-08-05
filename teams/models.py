@@ -2,7 +2,7 @@ from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 from django import template
-import misaka
+# import misaka
 from django.utils.text import slugify
 
 
@@ -14,7 +14,7 @@ class Team(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(allow_unicode=True, unique=True)
     description = models.TextField(blank=True, default='')
-    description_html = models.TextField(editable=False, default='', blank=True)
+    # description_html = models.TextField(editable=False, default='', blank=True)
     manager = models.ForeignKey(User, related_name='managed_teams', on_delete=models.CASCADE)
     members = models.ManyToManyField(User, related_name='teams')
     
@@ -23,7 +23,7 @@ class Team(models.Model):
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        self.description_html = misaka.html(self.description)
+        # self.description_html = misaka.html(self.description)
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):
@@ -37,7 +37,7 @@ class TeamProject(models.Model):
     name = models.CharField(max_length=100, unique=True)
     slug = models.SlugField(allow_unicode=True, unique=True)
     description = models.TextField(blank=True, default='')
-    description_html = models.TextField(editable=False, default='', blank=True)
+    # description_html = models.TextField(editable=False, default='', blank=True)
     active = models.BooleanField(default=False)
     teams = models.ManyToManyField(Team, related_name='projects')
     
@@ -46,7 +46,7 @@ class TeamProject(models.Model):
     
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
-        self.description_html = misaka.html(self.description)
+        # self.description_html = misaka.html(self.description)
         super().save(*args, **kwargs)
     
     def get_absolute_url(self):

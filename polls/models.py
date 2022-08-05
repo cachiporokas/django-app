@@ -1,6 +1,6 @@
 from click import option
 from django import template
-import misaka
+# import misaka
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth import get_user_model
@@ -18,7 +18,7 @@ class Poll(models.Model):
   creation_date = models.DateTimeField(auto_now_add=True)
   update_date = models.DateTimeField(auto_now=True)
   description = models.CharField(max_length=600)
-  description_html = models.TextField(editable=False)
+  # description_html = models.TextField(editable=False)
   active = models.BooleanField(default=False)
   team = models.ForeignKey(
       Team, related_name='team_poll', on_delete=models.CASCADE)
@@ -30,9 +30,9 @@ class Poll(models.Model):
   def __str__(self):
     return self.title
 
-  def save(self, *args, **kwargs):
-    self.description_html = misaka.html(self.description)
-    super().save(*args, **kwargs)
+  # def save(self, *args, **kwargs):
+  #   self.description_html = misaka.html(self.description)
+  #   super().save(*args, **kwargs)
 
   def get_absolute_url(self):
     return reverse('teams:polls:poll_add_choices', kwargs={"slug": self.team.slug, "pk": self.pk})
