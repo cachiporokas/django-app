@@ -83,15 +83,16 @@
       {% include 'message_board/partials/comment_form.html' %}
     </div>
     <!--Comments. Change to HTMX?-->
-    <div class="px-4 container-fluid">
+    <div class=" container-fluid">
       <div class="row pt-3">
         <div class="col-12 my-auto bg-dark2 border border-secondary border-2">
           <div class="p-1 pt-2">
             <h4>Comments:</h4>
           </div>
-          <div class="border-top border-3 d-flex flex-column gap-2 mb-3"
+          <div class="d-flex flex-column gap-2 mb-3"
             hx-get="{% url 'teams:message_board:comment_list' publication.team.slug publication.id -1%}"
             hx-trigger="load">
+            {% comment %} {% include 'message_board/partials/comment_list2.html' with slug=publication.team.slug pk=publication.id parent_pk="-1" %} {% endcomment %}
           </div>
         </div>
       </div>

@@ -1,6 +1,10 @@
 {% for comment in comments_list %}
-<div class="bg-secondary border-start border-3">
-  <div class="comment-container opened p-1" id="comment-level-0" dataset="">
+{% if comment.parent %}
+<div class="bg-light2 border-start border-2 ms-1 border-dark">
+{% else %}
+<div class="bg-light2">
+{% endif %}
+  <div class="comment-container opened p-1" id="comment-{{comment.id}}" dataset="dataset-{{comment.parent.id}}">
     <div class="comment-card bg-dark2 p-2 ps-3 my-1 ms-1">
       <h6>{{ comment.message }}</h6>
       <div class="comment-card-footer d-flex justify-content-end gap-2 me-3 mb-1 border-top border-top mt-3 pt-1" style="font-size:0.88rem;">
@@ -27,6 +31,7 @@
               hx-get="{% url 'teams:message_board:comment_list' team_slug pub_pk comment.id%}"
               hx-target="#replylist{{comment.id}}"
               hx-swap="outerHTML"
+              onClick="replaceHTMX(this)"
             >
               Replies {{ comment.childs__count }}
             </a>
@@ -37,9 +42,9 @@
         </div>
       </div>
       <div id="replyform{{comment.id}}"></div>
-      <div id="replylist{{comment.id}}"></div>
     </div>
     
+    <div id="replylist{{comment.id}}"></div>
     
   </div>
 </div>
@@ -49,5 +54,27 @@
 </div>
 {% endfor %}
 
-{% block script %}
-{% endblock script %}
+{% block scripts %}
+<script>
+  function replaceHTMX(e){
+    setTimeout(function() {
+      text = e.text
+      e.outerHTML = `<a onClick="toggleShowReplies(this)">${text}</a>`
+    }, 0)
+  }
+
+  function toggleShowReplies(e) {
+    let parentContainer = e.closest(".comment-container");
+    let _id = parentContainer.id;
+    if( _id ) {
+      let parentCommentId = _id.split('-')[1]
+      let childrenContainer = parentContainer.querySelectorAll(
+        `[dataset=dataset-${parentCommentId}]`
+      );
+      childrenContainer.forEach( (child) => child.classList.toggle("opened"))
+    }
+  }
+</script>
+
+
+{% endblock scripts %}
